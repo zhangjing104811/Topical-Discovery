@@ -65,6 +65,7 @@ def train(X, vectorizer, true_k=10, minibatch=False, showLable=False):
                 print(' %s' % terms[ind], end='')
             print()
     result = list(km.predict(X))
+    print(km.cluster_centers_.shape)  #kmeans的聚类中心
     # print(result)
     print('Cluster distribution:')
     print(dict([(i, result.count(i)) for i in result]))
@@ -79,24 +80,24 @@ def test():
     X, vectorizer = transform(dataset, n_features=500)
     true_ks = []
     scores = []
-    # for i in range(3, 80, 1):
-    #     score = train(X, vectorizer, true_k=i) / len(dataset)
-    #     # print(i, score)
-    #     true_ks.append(i)
-    #     scores.append(score)
-    # plt.figure(figsize=(8, 4))
-    # plt.plot(true_ks, scores, label="error", color="red", linewidth=1)
-    # plt.xlabel("n_features")
-    # plt.ylabel("error")
-    # plt.legend()
-    # plt.show()
+    for i in range(3, 80, 1):
+        score = train(X, vectorizer, true_k=i) / len(dataset)
+        # print(i, score)
+        true_ks.append(i)
+        scores.append(score)
+    plt.figure(figsize=(8, 4))
+    plt.plot(true_ks, scores, label="error", color="red", linewidth=1)
+    plt.xlabel("n_features")
+    plt.ylabel("error")
+    plt.legend()
+    plt.show()
 
 
 def out():
     '''在最优参数下输出聚类结果'''
     title, dataset, document = get_title_context()
     X,vectorizer = transform(dataset,n_features=500)
-    score = train(X,vectorizer,true_k=12,showLable=True)/len(dataset)
+    score = train(X,vectorizer,true_k=10,showLable=False)/len(dataset)
     print (score)
 
 # test()
